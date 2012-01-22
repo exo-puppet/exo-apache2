@@ -28,49 +28,41 @@
 #   }
 #
 # [Remember: No empty lines between comments and class definition]
-define apache2::module ( $package_name, $activated=true ) {
+define apache2::module ( $package_name=false, $activated=true, $conf_file=true ) {
 	include "apache2"
 	
-	package { $package_name:
-		ensure	=> present,
-		notify => Class["apache2::service"],
+	if $package_name != false {
+        package { $package_name:
+            name   => $package_name,
+            ensure  => present,
+            notify => Class["apache2::service"],
+        }
 	}
-	
 	if ( $activated == true ) {
-		file { "${apache2::params::mods_available_dir}/${name}.load":
-			ensure => file,
-			owner  => root,
-			group  => root,
-			mode   => 0644,
-			require	=> Package [ $package_name ],
-			notify => Class["apache2::service"],
-		}
 	
 		file { "${apache2::params::mods_enabled_dir}/${name}.load":
 			ensure => link,
 			owner  => root,
 			group  => root,
 			target	=> "${apache2::params::mods_available_dir}/${name}.load",
-			require	=> File ["${apache2::params::mods_available_dir}/${name}.load"],
+#			require	=> File ["${apache2::params::mods_available_dir}/${name}.load"],
 			notify => Class["apache2::service"],
 		}
-		file { "${apache2::params::mods_available_dir}/${name}.conf":
-			ensure => file,
-			owner  => root,
-			group  => root,
-			mode   => 0644,
-			require	=> Package [ $package_name ],
-			notify => Class["apache2::service"],
-		}
-	
-		file { "${apache2::params::mods_enabled_dir}/${name}.conf":
-			ensure => link,
-			owner  => root,
-			group  => root,
-			target	=> "${apache2::params::mods_available_dir}/${name}.load",
-			require	=> File ["${apache2::params::mods_available_dir}/${name}.load"],
-			notify => Class["apache2::service"],
-		}
+        if ( $conf_file == true ) {
+            file { "${apache2::params::mods_enabled_dir}/${name}.conf":
+                ensure => link,
+                owner  => root,
+                group  => root,
+                target  => "${apache2::params::mods_available_dir}/${name}.conf",
+                require => File ["${apache2::params::mods_enabled_dir}/${name}.load"],
+                notify => Class["apache2::service"],
+            }
+        } else {
+            file { "${apache2::params::mods_enabled_dir}/${name}.conf":
+                ensure => absent,
+                notify => Class["apache2::service"],
+            }
+        }
 	} else {	
 		file { "${apache2::params::mods_enabled_dir}/${name}.load":
 			ensure => absent,

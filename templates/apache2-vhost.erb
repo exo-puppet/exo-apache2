@@ -1,0 +1,31 @@
+# ###################################
+# This file is managed by puppet
+# PLEASE DON'T MODIFY BY HAND
+# ###################################
+<VirtualHost *:80>
+
+    ServerName  <%= name %>
+
+<%if server_aliases.is_a? Array -%>
+<% server_aliases.each do |name| -%>
+<%= "    ServerAlias #{name}\n" %><% end -%>
+<% elsif server_aliases != '' -%>
+<%= "    ServerAlias #{server_aliases}" -%>
+<% end -%>
+
+<% if (admin_email != '') && admin_email != false -%>
+<%= "    ServerAdmin #{admin_email}" -%>
+<% end -%>
+
+
+#    Include /home/swfcommons/etc/apache2/includes/default.conf
+    # Allow only HTTPS
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+    ErrorLog        ${APACHE_LOG_DIR}/<%= name %>-error.log
+    LogLevel        warn
+    CustomLog       ${APACHE_LOG_DIR}/<%= name %>-access.log combined
+    
+</VirtualHost>
