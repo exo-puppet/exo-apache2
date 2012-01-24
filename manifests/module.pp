@@ -23,8 +23,8 @@
 # Sample Usage:
 #
 #   apache2::module { "fcgid":
-#     package_name 	=> "libapache2-mod-fcgid",
-#	  activated		=> true,
+#       package_name 	=> "libapache2-mod-fcgid",
+#       activated		=> true,
 #   }
 #
 # [Remember: No empty lines between comments and class definition]
