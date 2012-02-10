@@ -130,8 +130,8 @@ define apache2::vhost ( $activated=true, $ssl=true, $redirect2ssl = true,
         owner   => root,
         group   => root,
         mode    => 0644,
-        target  => "${apache2::params::sites_available_dir}/${name}",
-        require => File[ "${apache2::params::sites_available_dir}/${name}" ],
+        target  => "${apache2::params::sites_available_dir}/${name}-ssl",
+        require => File[ "${apache2::params::sites_available_dir}/${name}-ssl" ],
         notify  => Class[ "apache2::service" ],
     }
 
