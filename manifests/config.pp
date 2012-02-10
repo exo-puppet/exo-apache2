@@ -38,4 +38,12 @@ class apache2::config {
 		require => Class["apache2::install"],
 		notify => Class["apache2::service"],
 	}
+
+    apache2::vhost { "default":
+        activated       => true,
+        ssl             => true,
+        redirect2ssl    => false,
+#        server_aliases  => [ "ci.*.exoplatform.org" ],
+        admin_email     => "exo-swf@exoplatform.com",
+    }
 }

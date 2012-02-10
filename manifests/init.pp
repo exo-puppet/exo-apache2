@@ -28,8 +28,10 @@
 #	$max_keepalive_requests:
 #		limits the number of requests allowed per connection when KeepAlive is on. If it is set to 0, unlimited requests will be allowed. We recommend that this setting be kept to a high value for maximum server performance. (default: 500) 
 #		(doc : http://httpd.apache.org/docs/2.2/mod/core.html#maxkeepaliverequests)
-#	$keepalive_timeout:
-#		Amount of time (in seconds) the server will wait for subsequent requests on a persistent connection (default: 15) (doc : http://httpd.apache.org/docs/2.2/mod/core.html#keepalivetimeout)
+#   $keepalive_timeout:
+#       Amount of time (in seconds) the server will wait for subsequent requests on a persistent connection (default: 15) (doc : http://httpd.apache.org/docs/2.2/mod/core.html#keepalivetimeout)
+#   $ssl:
+#       activate (true) or not (false) mod_ssl
 #	$lastversion:
 #		this variable allow to chose if the package should always be updated to the last available version (true) or not (false) (default: false)
 #
@@ -68,6 +70,7 @@ class apache2 ( $start_servers = "2",
 				$keepalive = "On",
 				$max_keepalive_requests = "500",
 				$keepalive_timeout = "15",
+				$ssl = false,
 				$lastversion = false) {
 	# parameters validation
 	if ($lastversion != true) and ($lastversion != false) {

@@ -57,8 +57,39 @@
     #ErrorDocument 502 /exo-static/502.html
     #ErrorDocument 503 /exo-static/503.html
     
-    ErrorLog        ${APACHE_LOG_DIR}/<%= name %>-error.log
+    #####################
+    # Log configuration
+    #####################
+    ErrorLog        ${APACHE_LOG_DIR}/<%= name %>-error-ssl.log
     LogLevel        warn
-    CustomLog       ${APACHE_LOG_DIR}/<%= name %>-access.log combined
+    CustomLog       ${APACHE_LOG_DIR}/<%= name %>-access-ssl.log combined
+    RewriteLog      ${APACHE_LOG_DIR}/<%= name %>-rewrite-ssl.log
+    RewriteLogLevel 0
+
+    #####################
+    # SSL configuration
+    #####################
+    SSLEngine             on
+    SSLCertificateFile    /home/swfcommons/etc/apache2/certs/cert-1294668905-170131.cer
+    SSLCertificateKeyFile /home/swfcommons/etc/apache2/certs/wild.exoplatform.org.key
+    SSLCertificateChainFile /home/swfcommons/etc/apache2/certs/chain-1294668905-170131.txt
+    
+    # configuration du SSL
+    # 40-bit mini
+    #SSLCipherSuite HIGH:MEDIUM:LOW:EXPORT:!ADH:!DSS:!SSLv2:!EXPORT56:@STRENGTH:+3DES:+DES
+    # 128-bit mini
+    SSLCipherSuite HIGH:MEDIUM:!ADH:!DSS:!SSLv2:@STRENGTH:+3DES
+    SSLProtocol all -SSLv2    
+    <FilesMatch "\.(cgi|shtml|phtml|php)$">
+        SSLOptions +StdEnvVars
+    </FilesMatch>
+    <Directory /usr/lib/cgi-bin>
+        SSLOptions +StdEnvVars
+    </Directory>
+    BrowserMatch "MSIE [2-6]" \
+        nokeepalive ssl-unclean-shutdown \
+        downgrade-1.0 force-response-1.0
+    # MSIE 7 and newer should be able to use keepalive
+    BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
     
 </VirtualHost>
