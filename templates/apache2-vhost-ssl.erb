@@ -2,7 +2,7 @@
 # This file is managed by puppet
 # PLEASE DON'T MODIFY BY HAND
 # ###################################
-<VirtualHost *:80>
+<VirtualHost *:443>
 
 <% if (name != 'default') -%>
 <%= "    ServerName #{name}" -%>
@@ -50,12 +50,31 @@
     # configures the footer on server-generated documents
     ServerSignature Off
     
+    #####################
     # Error pages
-    # FIXME Re-Activate error page
-    #ErrorDocument 404 /exo-static/404.html
-    #ErrorDocument 500 /exo-static/500.html
-    #ErrorDocument 502 /exo-static/502.html
-    #ErrorDocument 503 /exo-static/503.html
+    #####################
+<% if scope.lookupvar('apache2::error_404_uri') != false -%>
+    ErrorDocument 404 <%= scope.lookupvar('apache2::error_404_uri') %>
+<% end -%>
+<% if scope.lookupvar('apache2::error_500_uri') != false -%>
+    ErrorDocument 500 <%= scope.lookupvar('apache2::error_500_uri') %>
+<% end -%>
+<% if scope.lookupvar('apache2::error_502_uri') != false -%>
+    ErrorDocument 502 <%= scope.lookupvar('apache2::error_502_uri') %>
+<% end -%>
+<% if scope.lookupvar('apache2::error_503_uri') != false -%>
+    ErrorDocument 503 <%= scope.lookupvar('apache2::error_503_uri') %>
+<% end -%>
+
+    #####################
+    # Include configuration
+    #####################
+<%if includes.is_a? Array -%>
+<% includes.each do |name| -%>
+<%= "    Include #{name}\n" %><% end -%>
+<% elsif includes != '' -%>
+<%= "    Include #{includes}" -%>
+<% end -%>
     
     #####################
     # Log configuration
@@ -70,10 +89,13 @@
     # SSL configuration
     #####################
     SSLEngine             on
-    SSLCertificateFile    /etc/apache2/certs/cert-1294668905-170131.cer
-    SSLCertificateKeyFile /etc/apache2/certs/wild.exoplatform.org.key
-    SSLCertificateChainFile /etc/apache2/certs/chain-1294668905-170131.txt
-    
+    #SSLCertificateFile    /etc/apache2/certs/cert-1294668905-170131.cer
+    SSLCertificateFile    <%= scope.lookupvar('apache2::params::ssl_cert_file') %>
+    #SSLCertificateKeyFile /etc/apache2/certs/wild.exoplatform.org.key
+    SSLCertificateKeyFile    <%= scope.lookupvar('apache2::params::ssl_cert_key_file') %>
+    #SSLCertificateChainFile /etc/apache2/certs/chain-1294668905-170131.txt
+    SSLCertificateChainFile    <%= scope.lookupvar('apache2::params::ssl_cert_chain_file') %>
+
     # configuration du SSL
     # 40-bit mini
     #SSLCipherSuite HIGH:MEDIUM:LOW:EXPORT:!ADH:!DSS:!SSLv2:!EXPORT56:@STRENGTH:+3DES:+DES

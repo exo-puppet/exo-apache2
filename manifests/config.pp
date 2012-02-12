@@ -1,6 +1,8 @@
 class apache2::config {
 	
+    ####################################
 	# Apache main config file check
+    ####################################
 	file { $apache2::params::config_file:
 		ensure => file,
 		owner  => root,
@@ -8,9 +10,10 @@ class apache2::config {
 		mode   => 0644,
 		require => Class["apache2::install"],
 		notify => Class["apache2::service"],
-	}
-
+	} -> 
+    ####################################
 	# Configure global Apache settings
+    ####################################
 	augeas { "configure-apache2-global-settings":
 		context	=> "/files${apache2::params::config_file}",
 		changes	=> [
@@ -21,9 +24,10 @@ class apache2::config {
 		],
 		require => Class["apache2::install"],
 		notify => Class["apache2::service"],
-	}
-	
+	} ->
+    ####################################
 	# Configure the MPM Worker module
+    ####################################
 	augeas { "configure-apache2-mpm-worker-module":
 		context	=> "/files${apache2::params::config_file}",
 		changes	=> [
@@ -37,13 +41,69 @@ class apache2::config {
 		],
 		require => Class["apache2::install"],
 		notify => Class["apache2::service"],
-	}
-
+	} ->
+    ####################################
+    # Add SSL Certificats if specified
+    ####################################
+    file { "${apache2::params::ssl_cert_file}":
+        ensure => $apache2::ssl_cert_file ? {
+            false   => absent,
+            default => file,
+        },
+        owner  => root,
+        group  => root,
+        mode   => 0644,
+        source =>  $apache2::ssl_cert_file,
+        require => Class[ "apache2::install" ],
+        notify  => Class[ "apache2::service" ],
+    } ->     
+    file { "${apache2::params::ssl_cert_key_file}":
+        ensure => $apache2::ssl_cert_key_file ? {
+            false   => absent,
+            default => file,
+        },
+        owner  => root,
+        group  => root,
+        mode   => 0644,
+        source =>  $apache2::ssl_cert_key_file,
+        require => Class[ "apache2::install" ],
+        notify  => Class[ "apache2::service" ],
+    } ->     
+    file { "${apache2::params::ssl_cert_chain_file}":
+        ensure => $apache2::ssl_cert_chain_file ? {
+            false   => absent,
+            default => file,
+        },
+        owner  => root,
+        group  => root,
+        mode   => 0644,
+        source =>  $apache2::ssl_cert_chain_file,
+        require => Class[ "apache2::install" ],
+        notify  => Class[ "apache2::service" ],
+    } ->     
+    ####################################
+    # Configure NamedVirtualHost if any
+    ####################################
+    file { "${apache2::params::confd_dir}/virtual.conf":
+        ensure => $apache2::name_virtual_host_ports ? {
+            false   => absent,
+            default => file,
+        },
+        owner  => root,
+        group  => root,
+        mode   => 0644,
+        content =>  template("apache2/conf.d/virtual.conf.erb"),
+        require => Class[ "apache2::install" ],
+        notify  => Class[ "apache2::service" ],
+    } ->     
+    ####################################
+    # Add default Virtual Host
+    ####################################
     apache2::vhost { "default":
         activated       => true,
         ssl             => true,
         redirect2ssl    => false,
-#        server_aliases  => [ "ci.*.exoplatform.org" ],
+        order           => "000",
         admin_email     => "exo-swf@exoplatform.com",
     }
 }

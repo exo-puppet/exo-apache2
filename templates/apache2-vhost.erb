@@ -7,19 +7,20 @@
 <% if (name != 'default') -%>
 <%= "    ServerName #{name}" -%>
 <% end -%>
-
 <%if server_aliases.is_a? Array -%>
 <% server_aliases.each do |name| -%>
 <%= "    ServerAlias #{name}\n" %><% end -%>
 <% elsif server_aliases != '' -%>
 <%= "    ServerAlias #{server_aliases}" -%>
 <% end -%>
-
 <% if (admin_email != '') && admin_email != false -%>
 <%= "    ServerAdmin #{admin_email}" -%>
 <% end -%>
 
 
+    #####################
+    # Generic configuration
+    #####################
     <Directory />
         Options FollowSymLinks
         AllowOverride None
@@ -43,20 +44,40 @@
     
     # don't loose time with IP address lookups
     HostnameLookups Off
-    
     # needed for named virtual hosts
     UseCanonicalName Off
-    
     # configures the footer on server-generated documents
     ServerSignature Off
     
+    #####################
     # Error pages
-    # FIXME Re-Activate error page
-    #ErrorDocument 404 /exo-static/404.html
-    #ErrorDocument 500 /exo-static/500.html
-    #ErrorDocument 502 /exo-static/502.html
-    #ErrorDocument 503 /exo-static/503.html
+    #####################
+<% if scope.lookupvar('apache2::error_404_uri') != false -%>
+    ErrorDocument 404 <%= scope.lookupvar('apache2::error_404_uri') %>
+<% end -%>
+<% if scope.lookupvar('apache2::error_500_uri') != false -%>
+    ErrorDocument 500 <%= scope.lookupvar('apache2::error_500_uri') %>
+<% end -%>
+<% if scope.lookupvar('apache2::error_502_uri') != false -%>
+    ErrorDocument 502 <%= scope.lookupvar('apache2::error_502_uri') %>
+<% end -%>
+<% if scope.lookupvar('apache2::error_503_uri') != false -%>
+    ErrorDocument 503 <%= scope.lookupvar('apache2::error_503_uri') %>
+<% end -%>
     
+    #####################
+    # Include configuration
+    #####################
+<%if includes.is_a? Array -%>
+<% includes.each do |name| -%>
+<%= "    Include #{name}\n" %><% end -%>
+<% elsif includes != '' -%>
+<%= "    Include #{includes}" -%>
+<% end -%>
+
+    #####################
+    # Log configuration
+    #####################
     ErrorLog        ${APACHE_LOG_DIR}/<%= name %>-error.log
     LogLevel        warn
     CustomLog       ${APACHE_LOG_DIR}/<%= name %>-access.log combined

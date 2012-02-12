@@ -1,0 +1,14 @@
+# ###################################
+# This file is managed by puppet
+# PLEASE DON'T MODIFY BY HAND
+# ###################################
+
+#
+#  We're running multiple virtual hosts.
+#
+<%if scope.lookupvar('apache2::name_virtual_host_ports').is_a? Array -%>
+<% scope.lookupvar('apache2::name_virtual_host_ports').each do |name| -%>
+<%= "NameVirtualHost #{name}\n" %><% end -%>
+<% elsif scope.lookupvar('apache2::name_virtual_host_ports') != '' -%>
+<%= "NameVirtualHost #{name_virtual_host_ports}" -%>
+<% end -%>

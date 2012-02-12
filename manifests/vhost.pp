@@ -23,6 +23,16 @@
 #   
 #   this virtual host should be exposed with ssl (true) or not (false)
 #
+# [+redirect2ssl+]
+#   (OPTIONAL) (default: true) 
+#   
+#   If ssl is activated, we can automaticaly redirect the non-ssl vhost to its ssl version (true) or not (false)
+#
+# [+order+]
+#   (OPTIONAL) (default: 100) 
+#   
+#   Use a string numerical value to order the VHosts (000 is use by the default vhost) 
+#
 # [+server_aliases+]
 #   (OPTIONAL) (default: <empty>) 
 #   
@@ -43,20 +53,16 @@
 #   apache2::vhost { "jira.exoplatform.org":
 #     activated         => true,
 #     ssl               => true,
-#     server_aliases    => [ "jira.*.exoplatform.org", "jira.exoplatform.com" ],
+#     server_aliases    => [ "jira.*.exoplatform.org", "jira-*.exoplatform.org" ],
+#     admin_email       => "admin@test.com",
 #     document_root     => "/var/www",
 #   }
 #
-define apache2::vhost ( $activated=true, $ssl=true, $redirect2ssl = true,
+define apache2::vhost ( $activated=true, $ssl=true, $redirect2ssl = true, $order = "100",
                         $server_aliases=[], $admin_email=false,
-                        $document_root="/var/www/" ) {
+                        $document_root="/var/www/",
+                        $includes=[] ) {
                             
-#    if ( $ssl and $redirect2ssl ) {
-#        $vhost_http_template = "apache2/apache2-vhost-redirect.erb"
-#    } else {
-#        $vhost_http_template = "apache2/apache2-vhost.erb"
-#    }
-    
     ########################
     # HTTP Configuration
     ########################
@@ -66,8 +72,6 @@ define apache2::vhost ( $activated=true, $ssl=true, $redirect2ssl = true,
         owner  => root,
         group  => root,
         mode   => 0644,
-        # path    => "${apache2::params::sites_available_dir}/${name}",
-#        content =>  $ssl and $redirect2ssl ? {
         content =>  $ssl  ? {
             true    => $redirect2ssl ? {
                 true    => template("apache2/apache2-vhost-redirect.erb"),
@@ -79,15 +83,11 @@ define apache2::vhost ( $activated=true, $ssl=true, $redirect2ssl = true,
         notify  => Class[ "apache2::service" ],
     } ->     
     # Activate or not the VHost configuration file
-    file { "${apache2::params::sites_enabled_dir}/${name}":
+    file { "${apache2::params::sites_enabled_dir}/${order}-${name}":
         ensure => $activated ? {
             true    => "link",
             default => "absent"
         },
-#        path    => $name == "default" ? {
-#            true    => "000000-default",
-#            default => $name,
-#        },
         owner   => root,
         group   => root,
         mode    => 0644,
@@ -95,7 +95,6 @@ define apache2::vhost ( $activated=true, $ssl=true, $redirect2ssl = true,
         require => File[ "${apache2::params::sites_available_dir}/${name}" ],
         notify  => Class[ "apache2::service" ],
     } ->
-#    if ( $ssl == true ) {
     ########################
     # HTTPS Configuration (ssl)
     ########################
@@ -114,8 +113,7 @@ define apache2::vhost ( $activated=true, $ssl=true, $redirect2ssl = true,
         notify  => Class[ "apache2::service" ],
     } ->     
     # Activate or not the VHost configuration file
-    file { "${apache2::params::sites_enabled_dir}/${name}-ssl":
-#        ensure => $ssl and $activated ? {
+    file { "${apache2::params::sites_enabled_dir}/${order}-${name}-ssl":
         ensure => $ssl  ? {
             true    => $activated ? {
                 true    => "link",
@@ -123,10 +121,6 @@ define apache2::vhost ( $activated=true, $ssl=true, $redirect2ssl = true,
                 },
             default => "absent",
         },
-#        path    => $name == "default" ? {
-#            true    => "000000-default-ssl",
-#            default => $name,
-#        },
         owner   => root,
         group   => root,
         mode    => 0644,
@@ -134,31 +128,4 @@ define apache2::vhost ( $activated=true, $ssl=true, $redirect2ssl = true,
         require => File[ "${apache2::params::sites_available_dir}/${name}-ssl" ],
         notify  => Class[ "apache2::service" ],
     }
-
-#    } else {
-#        # Create the VHost configuration file
-#        file { "${apache2::params::sites_available_dir}/${name}":
-#            ensure => file,
-#            owner  => root,
-#            group  => root,
-#            mode   => 0644,
-#            # path    => "${apache2::params::sites_available_dir}/${name}",
-#            content => template ("apache2/apache2-vhost.erb"),
-#            require => Class[ "apache2::install" ],
-#            notify  => Class[ "apache2::service" ],
-#        } ->     
-#        # Activate or not the VHost configuration file
-#        file { "${apache2::params::sites_enabled_dir}/${name}":
-#            ensure => $activated ? {
-#                true    => "link",
-#                default => "absent"
-#            },
-#            owner   => root,
-#            group   => root,
-#            mode    => 0644,
-#            target  => "${apache2::params::sites_available_dir}/${name}",
-#            require => File[ "${apache2::params::sites_available_dir}/${name}" ],
-#            notify  => Class[ "apache2::service" ],
-#        }
-#    }
 }
