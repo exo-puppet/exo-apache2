@@ -7,12 +7,14 @@
 <% if (name != 'default') -%>
 <%= "    ServerName #{name}" -%>
 <% end -%>
+
 <%if server_aliases.is_a? Array -%>
 <% server_aliases.each do |name| -%>
 <%= "    ServerAlias #{name}\n" %><% end -%>
 <% elsif server_aliases != '' -%>
 <%= "    ServerAlias #{server_aliases}" -%>
 <% end -%>
+
 <% if (admin_email != '') && admin_email != false -%>
 <%= "    ServerAdmin #{admin_email}" -%>
 <% end -%>
