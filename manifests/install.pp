@@ -11,6 +11,6 @@ class apache2::install {
         mode   => 0644,
 	} ->
     class { "apache2::mod::rewrite": activated  => true } ->
-    class { "apache2::mod::ssl": activated  => true }
+    class { "apache2::mod::ssl": activated  => $apache2::ssl }
     
 }
