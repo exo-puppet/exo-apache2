@@ -53,7 +53,10 @@ class apache2::config {
         owner  => root,
         group  => root,
         mode   => 0644,
-        source =>  $apache2::ssl_cert_file,
+        source =>  $apache2::ssl_cert_file ? {
+            false => undef,
+            default => $apache2::ssl_cert_file,
+        },
         require => Class[ "apache2::install" ],
         notify  => Class[ "apache2::service" ],
     } ->     
@@ -65,7 +68,10 @@ class apache2::config {
         owner  => root,
         group  => root,
         mode   => 0644,
-        source =>  $apache2::ssl_cert_key_file,
+        source =>  $apache2::ssl_cert_key_file ? {
+            false => undef,
+            default => $apache2::ssl_cert_key_file,
+        },
         require => Class[ "apache2::install" ],
         notify  => Class[ "apache2::service" ],
     } ->     
@@ -77,7 +83,10 @@ class apache2::config {
         owner  => root,
         group  => root,
         mode   => 0644,
-        source =>  $apache2::ssl_cert_chain_file,
+        source =>  $apache2::ssl_cert_chain_file ? {
+            false => undef,
+            default => $apache2::ssl_cert_chain_file,
+        },
         require => Class[ "apache2::install" ],
         notify  => Class[ "apache2::service" ],
     } ->     
@@ -101,7 +110,7 @@ class apache2::config {
     ####################################
     apache2::vhost { "default":
         activated       => true,
-        ssl             => true,
+        ssl             => $apache2::ssl,
         redirect2ssl    => false,
         order           => "000",
         admin_email     => "exo-swf@exoplatform.com",

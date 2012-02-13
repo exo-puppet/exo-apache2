@@ -10,5 +10,5 @@
 <% scope.lookupvar('apache2::name_virtual_host_ports').each do |name| -%>
 <%= "NameVirtualHost #{name}\n" %><% end -%>
 <% elsif scope.lookupvar('apache2::name_virtual_host_ports') != '' -%>
-<%= "NameVirtualHost #{name_virtual_host_ports}" -%>
+NameVirtualHost <%= scope.lookupvar('apache2::name_virtual_host_ports') %>
 <% end -%>
