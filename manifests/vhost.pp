@@ -59,7 +59,7 @@
 #   }
 #
 define apache2::vhost ( $activated=true, $ssl=true, $redirect2ssl = true, $order = "100",
-                        $server_aliases=[], $admin_email=false,
+                        $server_aliases=[], $admin_email=$apache2::default_admin_email,
                         $document_root="/var/www/",
                         $includes=[] ) {
 

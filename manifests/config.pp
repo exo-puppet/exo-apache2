@@ -113,6 +113,5 @@ class apache2::config {
         ssl             => $apache2::ssl,
         redirect2ssl    => false,
         order           => "000",
-        admin_email     => "exo-swf@exoplatform.com",
     }
 }

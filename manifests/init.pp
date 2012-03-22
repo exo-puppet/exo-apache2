@@ -95,6 +95,7 @@ class apache2 ( $start_servers          = "2",
                 $error_503_uri          = false,
 				$includes_dir           = false,
 				$name_virtual_host_ports= false,
+				$default_admin_email    = "webmaster@${::fqdn}",
 				$lastversion            = false ) {
 	# parameters validation
 	if ($lastversion != true) and ($lastversion != false) {
