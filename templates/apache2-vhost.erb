@@ -54,6 +54,9 @@
     #####################
     # Error pages
     #####################
+<% if scope.lookupvar('apache2::error_403_uri') != false -%>
+    ErrorDocument 403 <%= scope.lookupvar('apache2::error_403_uri') %>
+<% end -%>
 <% if scope.lookupvar('apache2::error_404_uri') != false -%>
     ErrorDocument 404 <%= scope.lookupvar('apache2::error_404_uri') %>
 <% end -%>
