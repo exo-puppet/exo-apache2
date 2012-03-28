@@ -48,6 +48,18 @@
 #   
 #   The document root of the virtual host. 
 #
+# [+includes+]
+#   (OPTIONAL) (default: []) 
+#   
+#   Array of Apache files to include in the Apache VHost file. 
+#
+# [+includes_ssl+]
+#   (OPTIONAL) (default: false) 
+#   
+#   Array of Apache files to include in the Apache VHost file for HTTPS Vhost file.
+#   If the value of the parameter is "false" (which is the default), the same files as for HTTP are included.
+#   If the value of the parameter is an empty array, no file will be included in for HTTPS.
+#
 # Sample Usage:
 #
 #   apache2::vhost { "jira.exoplatform.org":
@@ -56,12 +68,13 @@
 #     server_aliases    => [ "jira.*.exoplatform.org", "jira-*.exoplatform.org" ],
 #     admin_email       => "admin@test.com",
 #     document_root     => "/var/www",
+#     includes          => "/etc/apache2/includes/jira.conf",
 #   }
 #
 define apache2::vhost ( $activated=true, $ssl=true, $redirect2ssl = true, $order = "100",
                         $server_aliases=[], $admin_email=$apache2::default_admin_email,
                         $document_root="/var/www/",
-                        $includes=[] ) {
+                        $includes=[], $includes_ssl=false ) {
 
     if (  $ssl == true  and ( $apache2::ssl_cert_file == false or $apache2::ssl_cert_key_file == false or $apache2::ssl_cert_chain_file == false ) ) {
         fail ("ssl is activated but at least one of of the certificates files is missing ( virtual host ${title} )")

@@ -72,11 +72,18 @@
     #####################
     # Include configuration
     #####################
+<%if includes_ssl.is_a? Array -%>
+<% includes_ssl.each do |name| -%>
+<%= "    Include #{name}\n" %><% end -%>
+<% elsif includes_ssl != '' && includes_ssl != false -%>
+<%= "    Include #{includes_ssl}" -%>
+<% elsif includes_ssl == false -%>
 <%if includes.is_a? Array -%>
 <% includes.each do |name| -%>
 <%= "    Include #{name}\n" %><% end -%>
 <% elsif includes != '' -%>
 <%= "    Include #{includes}" -%>
+<% end -%>
 <% end -%>
     
     #####################
