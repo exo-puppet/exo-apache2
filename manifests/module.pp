@@ -28,7 +28,7 @@
 #   }
 #
 # [Remember: No empty lines between comments and class definition]
-define apache2::module ( $package_name=false, $activated=true, $conf_file=true ) {
+define apache2::module ( $package_name=false, $activated=true, $conf_file=true, $conf_file_template=false ) {
 	include "apache2"
 	
 	if $package_name != false {
@@ -49,6 +49,16 @@ define apache2::module ( $package_name=false, $activated=true, $conf_file=true )
 			notify => Class["apache2::service"],
 		}
         if ( $conf_file == true ) {
+            if ( $conf_file_template == true ) {
+                file { "${apache2::params::mods_available_dir}/${name}.conf":
+                    ensure => file,
+                    owner  => root,
+                    group  => root,
+                    content => template ("apache2/mods-available/${name}.conf.erb"),
+                    require => File ["${apache2::params::mods_enabled_dir}/${name}.load"],
+                    notify => Class["apache2::service"],
+                }
+            }
             file { "${apache2::params::mods_enabled_dir}/${name}.conf":
                 ensure => link,
                 owner  => root,
