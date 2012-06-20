@@ -1,0 +1,14 @@
+# ###################################
+# This file is managed by puppet
+# PLEASE DON'T MODIFY BY HAND
+# ###################################
+<IfModule mod_mem_cache.c>
+        # Add CacheEnable mem ... in your virtual host configuration file for 
+        # each resources you want to put in the cache 
+        # ex: CacheEnable mem /
+        MCacheSize              <%= scope.lookupvar('apache2::mod::mem_cache::size') %>
+        MCacheMaxObjectCount    <%= scope.lookupvar('apache2::mod::mem_cache::max_object_count') %>
+        MCacheMinObjectSize     <%= scope.lookupvar('apache2::mod::mem_cache::min_object_size') %>
+        MCacheMaxObjectSize     <%= scope.lookupvar('apache2::mod::mem_cache::max_object_size') %>
+        MCacheRemovalAlgorithm  <%= scope.lookupvar('apache2::mod::mem_cache::removal_algorithm') %>
+</IfModule>
