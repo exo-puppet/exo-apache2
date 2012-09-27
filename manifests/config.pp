@@ -22,7 +22,7 @@ class apache2::config {
 			"set *[self::directive='MaxKeepAliveRequests']/arg \"${apache2::max_keepalive_requests}\"",
 			"set *[self::directive='KeepAliveTimeout']/arg \"${apache2::keepalive_timeout}\"",
 		],
-		require => Class["apache2::install"],
+		require => [Class["apache2::install"], Package ["augeas-tools"]],
 		notify => Class["apache2::service"],
 	} ->
     ####################################
@@ -39,7 +39,7 @@ class apache2::config {
 			"set IfModule[arg = 'mpm_worker_module']/*[self::directive='MaxClients']/arg \"${apache2::max_clients}\"",
 			"set IfModule[arg = 'mpm_worker_module']/*[self::directive='MaxRequestsPerChild']/arg \"${apache2::max_requests_per_child}\"",
 		],
-		require => Class["apache2::install"],
+		require => [Class["apache2::install"], Package ["augeas-tools"]],
 		notify => Class["apache2::service"],
     } ->
     ####################################
