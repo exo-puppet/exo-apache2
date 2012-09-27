@@ -1,5 +1,5 @@
 class apache2::config {
-	
+
     ####################################
 	# Apache main config file check
     ####################################
@@ -10,7 +10,7 @@ class apache2::config {
 		mode   => 0644,
 		require => Class["apache2::install"],
 		notify => Class["apache2::service"],
-	} -> 
+	} ->
     ####################################
 	# Configure global Apache settings
     ####################################
@@ -41,7 +41,7 @@ class apache2::config {
 		],
 		require => Class["apache2::install"],
 		notify => Class["apache2::service"],
-    } ->     
+    } ->
     ####################################
     # Configure envvars
     ####################################
@@ -71,7 +71,7 @@ class apache2::config {
         },
         require => Class[ "apache2::install" ],
         notify  => Class[ "apache2::service" ],
-    } ->     
+    } ->
     file { "${apache2::params::ssl_cert_key_file}":
         ensure => $apache2::ssl_cert_key_file ? {
             false   => absent,
@@ -86,7 +86,7 @@ class apache2::config {
         },
         require => Class[ "apache2::install" ],
         notify  => Class[ "apache2::service" ],
-    } ->     
+    } ->
     file { "${apache2::params::ssl_cert_chain_file}":
         ensure => $apache2::ssl_cert_chain_file ? {
             false   => absent,
@@ -101,7 +101,7 @@ class apache2::config {
         },
         require => Class[ "apache2::install" ],
         notify  => Class[ "apache2::service" ],
-    } ->     
+    } ->
     ####################################
     # Configure NamedVirtualHost if any
     ####################################
@@ -116,7 +116,7 @@ class apache2::config {
         content =>  template("apache2/conf.d/virtual.conf.erb"),
         require => Class[ "apache2::install" ],
         notify  => Class[ "apache2::service" ],
-    } ->     
+    } ->
     ####################################
     # Add default Virtual Host
     ####################################
