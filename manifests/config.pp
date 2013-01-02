@@ -43,18 +43,6 @@ class apache2::config {
 		notify => Class["apache2::service"],
     } ->
     ####################################
-    # Configure envvars
-    ####################################
-    file { "${apache2::params::config_dir}/envvars":
-        ensure => file,
-        owner  => root,
-        group  => root,
-        mode   => 0644,
-        source => "puppet:///modules/exo/etc/apache2/envvars",
-        require => Class[ "apache2::install" ],
-        notify  => Class[ "apache2::service" ],
-	} ->
-    ####################################
     # Add SSL Certificats if specified
     ####################################
     file { "${apache2::params::ssl_cert_file}":
