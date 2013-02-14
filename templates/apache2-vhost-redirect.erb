@@ -80,5 +80,6 @@
     ErrorLog        ${APACHE_LOG_DIR}/<%= name %>-error.log
     LogLevel        warn
     CustomLog       ${APACHE_LOG_DIR}/<%= name %>-access.log combined
-    
+    RewriteLog      ${APACHE_LOG_DIR}/<%= name %>-rewrite.log
+    RewriteLogLevel 0
 </VirtualHost>
