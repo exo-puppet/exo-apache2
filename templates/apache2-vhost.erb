@@ -4,19 +4,19 @@
 # ###################################
 <VirtualHost *:80>
 
-<% if (name != 'default') -%>
-<%= "    ServerName #{name}" -%>
+<% if (@name != 'default') -%>
+<%= "    ServerName #{@name}" -%>
 <% end -%>
 
-<%if server_aliases.is_a? Array -%>
-<% server_aliases.each do |name| -%>
+<%if @server_aliases.is_a? Array -%>
+<% @server_aliases.each do |name| -%>
 <%= "    ServerAlias #{name}\n" %><% end -%>
-<% elsif server_aliases != '' -%>
-<%= "    ServerAlias #{server_aliases}" -%>
+<% elsif @server_aliases != '' -%>
+<%= "    ServerAlias #{@server_aliases}" -%>
 <% end -%>
 
-<% if (admin_email != '') && admin_email != false -%>
-<%= "    ServerAdmin #{admin_email}" -%>
+<% if (@admin_email != '') && @admin_email != false -%>
+<%= "    ServerAdmin #{@admin_email}" -%>
 <% end -%>
 
 
@@ -28,8 +28,8 @@
         AllowOverride None
     </Directory>
     
-    DocumentRoot <%= "#{document_root}\n" -%>
-    <Directory <%= "#{document_root}" -%>>
+    DocumentRoot <%= "#{@document_root}\n" -%>
+    <Directory <%= "#{@document_root}" -%>>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Order allow,deny
@@ -73,20 +73,20 @@
     #####################
     # Include configuration
     #####################
-<%if includes.is_a? Array -%>
-<% includes.each do |name| -%>
+<%if @includes.is_a? Array -%>
+<% @includes.each do |name| -%>
 <%= "    Include #{name}\n" %><% end -%>
-<% elsif includes != '' -%>
-<%= "    Include #{includes}" -%>
+<% elsif @includes != '' -%>
+<%= "    Include #{@includes}" -%>
 <% end -%>
 
     #####################
     # Log configuration
     #####################
-    ErrorLog        ${APACHE_LOG_DIR}/<%= name %>-error.log
+    ErrorLog        ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-error.log
     LogLevel        warn
-    CustomLog       ${APACHE_LOG_DIR}/<%= name %>-access.log combined
-    RewriteLog      ${APACHE_LOG_DIR}/<%= name %>-rewrite.log
+    CustomLog       ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-access.log combined
+    RewriteLog      ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-rewrite.log
     RewriteLogLevel 0
     
 </VirtualHost>

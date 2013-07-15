@@ -4,19 +4,19 @@
 # ###################################
 <VirtualHost *:443>
 
-<% if (name != 'default') -%>
-<%= "    ServerName #{name}" -%>
+<% if (@name != 'default') -%>
+<%= "    ServerName #{@name}" -%>
 <% end -%>
 
-<%if server_aliases.is_a? Array -%>
-<% server_aliases.each do |name| -%>
+<%if @server_aliases.is_a? Array -%>
+<% @server_aliases.each do |name| -%>
 <%= "    ServerAlias #{name}\n" %><% end -%>
-<% elsif server_aliases != '' -%>
-<%= "    ServerAlias #{server_aliases}" -%>
+<% elsif @server_aliases != '' -%>
+<%= "    ServerAlias #{@server_aliases}" -%>
 <% end -%>
 
-<% if (admin_email != '') && admin_email != false -%>
-<%= "    ServerAdmin #{admin_email}" -%>
+<% if (@admin_email != '') && @admin_email != false -%>
+<%= "    ServerAdmin #{@admin_email}" -%>
 <% end -%>
 
 
@@ -25,8 +25,8 @@
         AllowOverride None
     </Directory>
     
-    DocumentRoot <%= "#{document_root}\n" -%>
-    <Directory <%= "#{document_root}" -%>>
+    DocumentRoot <%= "#{@document_root}\n" -%>
+    <Directory <%= "#{@document_root}" -%>>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Order allow,deny
@@ -72,27 +72,27 @@
     #####################
     # Include configuration
     #####################
-<%if includes_ssl.is_a? Array -%>
-<% includes_ssl.each do |name| -%>
+<%if @includes_ssl.is_a? Array -%>
+<% @includes_ssl.each do |name| -%>
 <%= "    Include #{name}\n" %><% end -%>
-<% elsif includes_ssl != '' && includes_ssl != false -%>
-<%= "    Include #{includes_ssl}" -%>
-<% elsif includes_ssl == false -%>
-<%if includes.is_a? Array -%>
-<% includes.each do |name| -%>
+<% elsif @includes_ssl != '' && @includes_ssl != false -%>
+<%= "    Include #{@includes_ssl}" -%>
+<% elsif @includes_ssl == false -%>
+<%if @includes.is_a? Array -%>
+<% @includes.each do |name| -%>
 <%= "    Include #{name}\n" %><% end -%>
-<% elsif includes != '' -%>
-<%= "    Include #{includes}" -%>
+<% elsif @includes != '' -%>
+<%= "    Include #{@includes}" -%>
 <% end -%>
 <% end -%>
     
     #####################
     # Log configuration
     #####################
-    ErrorLog        ${APACHE_LOG_DIR}/<%= name %>-error-ssl.log
+    ErrorLog        ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-error-ssl.log
     LogLevel        warn
-    CustomLog       ${APACHE_LOG_DIR}/<%= name %>-access-ssl.log combined
-    RewriteLog      ${APACHE_LOG_DIR}/<%= name %>-rewrite-ssl.log
+    CustomLog       ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-access-ssl.log combined
+    RewriteLog      ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-rewrite-ssl.log
     RewriteLogLevel 0
 
     #####################
