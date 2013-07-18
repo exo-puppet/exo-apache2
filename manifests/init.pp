@@ -113,6 +113,9 @@ class apache2 (
     fail('keepalive must be On or Off')
   }
 
-  # submodules
+  # modules dependencies
+  include repo
+
+  # internal classes
   include apache2::params, apache2::install, apache2::config, apache2::service
 }

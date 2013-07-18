@@ -10,12 +10,13 @@ class apache2::mod::crowd (
     check_certificate => false,
     require           => File[$package_download_directory]
   } -> # Install the required packages
-  package { 'libapache2-svn': } -> package { 'libcurl3': } -> # Install the downloaded package
+  repo::package { 'libapache2-svn': } -> repo::package { 'libcurl3': } -> # Install the downloaded package
   package { 'libapache2-mod-authnz-crowd':
     provider => dpkg,
     source   => "${package_download_directory}/libapache2-mod-authnz-crowd_2.0.2-1_amd64.deb",
     require  => [
-      Wget::Fetch['download-libapache2-mod-authnz-crowd_2.0.2-1_amd64.deb']],
+      Wget::Fetch['download-libapache2-mod-authnz-crowd_2.0.2-1_amd64.deb'],
+      Exec['repo-update'],],
   } -> # Add the Apache 2 module
   apache2::module { 'authnz_crowd':
     activated => $activated,

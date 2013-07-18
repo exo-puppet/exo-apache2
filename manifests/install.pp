@@ -1,7 +1,9 @@
 class apache2::install {
   package { 'httpd':
-    ensure => $apache2::params::ensure_mode,
-    name   => $apache2::params::service_name,
+    ensure  => $apache2::params::ensure_mode,
+    name    => $apache2::params::service_name,
+    require => [
+      Exec['repo-update'],],
   } -> file { $apache2::params::certs_dir:
     ensure => directory,
     owner  => root,

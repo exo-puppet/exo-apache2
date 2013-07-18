@@ -36,9 +36,7 @@ define apache2::module (
   include 'apache2'
 
   if $package_name != false {
-    package { $package_name:
-      ensure => present,
-      name   => $package_name,
+    repo::package { $package_name:
       notify => Class['apache2::service'],
     }
   }
