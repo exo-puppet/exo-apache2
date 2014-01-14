@@ -99,13 +99,13 @@
     # SSL configuration
     #####################
     SSLEngine             on
-    #SSLCertificateFile    /etc/apache2/certs/cert-1294668905-170131.cer
     SSLCertificateFile    <%= scope.lookupvar('apache2::params::ssl_cert_file') %>
-    #SSLCertificateKeyFile /etc/apache2/certs/wild.exoplatform.org.key
     SSLCertificateKeyFile    <%= scope.lookupvar('apache2::params::ssl_cert_key_file') %>
-    #SSLCertificateChainFile /etc/apache2/certs/chain-1294668905-170131.txt
     SSLCertificateChainFile    <%= scope.lookupvar('apache2::params::ssl_cert_chain_file') %>
-
+    SSLVerifyClient None
+    SSLUseStapling on
+    SSLStaplingCache “shmcb:logs/stapling_cache(128000)”
+    
     # configuration du SSL
     # 40-bit mini
     #SSLCipherSuite HIGH:MEDIUM:LOW:EXPORT:!ADH:!DSS:!SSLv2:!EXPORT56:@STRENGTH:+3DES:+DES
