@@ -103,8 +103,9 @@
     SSLCertificateKeyFile    <%= scope.lookupvar('apache2::params::ssl_cert_key_file') %>
     SSLCertificateChainFile    <%= scope.lookupvar('apache2::params::ssl_cert_chain_file') %>
     SSLVerifyClient None
-    SSLUseStapling on
-    SSLStaplingCache “shmcb:logs/stapling_cache(128000)”
+    # Requires apache 2.3+
+    #SSLUseStapling on
+    #SSLStaplingCache “shmcb:logs/stapling_cache(128000)”
     
     # configuration du SSL
     # 40-bit mini
