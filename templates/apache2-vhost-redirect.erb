@@ -5,18 +5,18 @@
 <VirtualHost *:80>
 
 <% if (@name != 'default') -%>
-<%= "    ServerName #{@name}" -%>
+<%= "    ServerName #{@name}\n" -%>
 <% end -%>
 
 <%if @server_aliases.is_a? Array -%>
 <% @server_aliases.each do |name| -%>
 <%= "    ServerAlias #{name}\n" %><% end -%>
 <% elsif @server_aliases != '' -%>
-<%= "    ServerAlias #{@server_aliases}" -%>
+<%= "    ServerAlias #{@server_aliases}\n" -%>
 <% end -%>
 
 <% if (@admin_email != '') && @admin_email != false -%>
-<%= "    ServerAdmin #{@admin_email}" -%>
+<%= "    ServerAdmin #{@admin_email}\n" -%>
 <% end -%>
 
 
@@ -53,20 +53,20 @@
     #####################
     # Error pages
     #####################
-<% if scope.lookupvar('apache2::error_403_uri') != false -%>
-    ErrorDocument 403 <%= scope.lookupvar('apache2::error_403_uri') %>
+<% if (@error_403_uri != '') && @error_403_uri != false -%>
+<%= "    ErrorDocument 403 #{@error_403_uri}\n" -%>
 <% end -%>
-<% if scope.lookupvar('apache2::error_404_uri') != false -%>
-    ErrorDocument 404 <%= scope.lookupvar('apache2::error_404_uri') %>
+<% if (@error_404_uri != '') && @error_404_uri != false -%>
+<%= "    ErrorDocument 404 #{@error_404_uri}\n" -%>
 <% end -%>
-<% if scope.lookupvar('apache2::error_500_uri') != false -%>
-    ErrorDocument 500 <%= scope.lookupvar('apache2::error_500_uri') %>
+<% if (@error_500_uri != '') && @error_500_uri != false -%>
+<%= "    ErrorDocument 500 #{@error_500_uri}\n" -%>
 <% end -%>
-<% if scope.lookupvar('apache2::error_502_uri') != false -%>
-    ErrorDocument 502 <%= scope.lookupvar('apache2::error_502_uri') %>
+<% if (@error_502_uri != '') && @error_502_uri != false -%>
+<%= "    ErrorDocument 502 #{@error_502_uri}\n" -%>
 <% end -%>
-<% if scope.lookupvar('apache2::error_503_uri') != false -%>
-    ErrorDocument 503 <%= scope.lookupvar('apache2::error_503_uri') %>
+<% if (@error_503_uri != '') && @error_503_uri != false -%>
+<%= "    ErrorDocument 503 #{@error_503_uri}\n" -%>
 <% end -%>
     
     # Allow only HTTPS

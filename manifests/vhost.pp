@@ -76,12 +76,15 @@ define apache2::vhost (
   $ssl            = true,
   $redirect2ssl   = true,
   $order          = '100',
-  $server_aliases = [
-    ],
+  $server_aliases = [],
   $admin_email    = $apache2::default_admin_email,
   $document_root  = '/var/www/',
-  $includes       = [
-    ],
+  $error_403_uri  = false,
+  $error_404_uri  = false,
+  $error_500_uri  = false,
+  $error_502_uri  = false,
+  $error_503_uri  = false,
+  $includes       = [],
   $includes_ssl   = false) {
   if ($ssl == true and ($apache2::ssl_cert_file == false or $apache2::ssl_cert_key_file == false or $apache2::ssl_cert_chain_file ==
   false)) {

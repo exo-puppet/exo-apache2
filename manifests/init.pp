@@ -103,6 +103,7 @@ class apache2 (
   $includes_dir            = false,
   $name_virtual_host_ports = false,
   $default_admin_email     = "webmaster@${::fqdn}",
+  $default_document_root           = '/var/www/',
   $lastversion             = false) {
   # parameters validation
   if ($lastversion != true) and ($lastversion != false) {

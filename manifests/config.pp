@@ -18,7 +18,8 @@ class apache2::config {
       "set *[self::directive='Timeout']/arg \"${apache2::timeout}\"",
       "set *[self::directive='KeepAlive']/arg \"${apache2::keepalive}\"",
       "set *[self::directive='MaxKeepAliveRequests']/arg \"${apache2::max_keepalive_requests}\"",
-      "set *[self::directive='KeepAliveTimeout']/arg \"${apache2::keepalive_timeout}\"",],
+      "set *[self::directive='KeepAliveTimeout']/arg \"${apache2::keepalive_timeout}\"",
+      ],
     require => [
       Class['apache2::install'],
       Package['augeas-tools']],
@@ -104,9 +105,15 @@ class apache2::config {
        # Add default Virtual Host
        ####################################
   apache2::vhost { 'default':
-    activated    => true,
-    ssl          => $apache2::ssl,
-    redirect2ssl => false,
-    order        => '000',
+    activated     => true,
+    ssl           => $apache2::ssl,
+    document_root => $apache2::default_document_root,
+    error_403_uri => $apache2::error_403_uri,
+    error_404_uri => $apache2::error_404_uri,
+    error_500_uri => $apache2::error_500_uri,
+    error_502_uri => $apache2::error_502_uri,
+    error_503_uri => $apache2::error_503_uri,
+    redirect2ssl  => false,
+    order         => '000',
   }
 }
