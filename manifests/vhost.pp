@@ -85,7 +85,7 @@ define apache2::vhost (
   $includes_ssl   = false) {
   if ($ssl == true and ($apache2::ssl_cert_file == false or $apache2::ssl_cert_key_file == false or $apache2::ssl_cert_chain_file ==
   false)) {
-    fail("ssl is activated but at least one of of the certificates files is missing ( virtual host ${title} )")
+    fail("ssl is activated but at least one of the certificates files is missing ( virtual host [${title}][${name}] )")
   }
 
   ########################
