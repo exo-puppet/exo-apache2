@@ -112,7 +112,7 @@
     #SSLCipherSuite HIGH:MEDIUM:LOW:EXPORT:!ADH:!DSS:!SSLv2:!EXPORT56:@STRENGTH:+3DES:+DES
     # 128-bit mini
     SSLCipherSuite HIGH:MEDIUM:!ADH:!DSS:!SSLv2:@STRENGTH:+3DES
-    SSLProtocol all -SSLv2    
+    SSLProtocol all -SSLv2 -SSLv3
     <FilesMatch "\.(cgi|shtml|phtml|php)$">
         SSLOptions +StdEnvVars
     </FilesMatch>
