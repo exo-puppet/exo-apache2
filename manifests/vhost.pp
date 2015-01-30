@@ -96,7 +96,7 @@ define apache2::vhost (
     ensure  => file,
     owner   => root,
     group   => root,
-    mode    => 0644,
+    mode    => '0644',
     content => $ssl ? {
       true    => $redirect2ssl ? {
         true    => template('apache2/apache2-vhost-redirect.erb'),
@@ -114,14 +114,15 @@ define apache2::vhost (
     },
     owner   => root,
     group   => root,
-    mode    => 0644,
+    mode    => '0644',
     target  => "${apache2::params::sites_available_dir}/${name}",
     require => File["${apache2::params::sites_available_dir}/${name}"],
     notify  => Class['apache2::service'],
-  } -> ########################
-       # HTTPS Configuration (ssl)
-       ########################
-       # Create the VHost configuration file for SSL
+  } ->
+  ########################
+  # HTTPS Configuration (ssl)
+  ########################
+  # Create the VHost configuration file for SSL
   file { "${apache2::params::sites_available_dir}/${name}-ssl":
     ensure  => $ssl ? {
       true    => file,
@@ -129,7 +130,7 @@ define apache2::vhost (
     },
     owner   => root,
     group   => root,
-    mode    => 0644,
+    mode    => '0644',
     # path    => "${apache2::params::sites_available_dir}/${name}",
     content => template('apache2/apache2-vhost-ssl.erb'),
     require => Class['apache2::install'],
@@ -145,7 +146,7 @@ define apache2::vhost (
     },
     owner   => root,
     group   => root,
-    mode    => 0644,
+    mode    => '0644',
     target  => "${apache2::params::sites_available_dir}/${name}-ssl",
     require => File["${apache2::params::sites_available_dir}/${name}-ssl"],
     notify  => Class['apache2::service'],

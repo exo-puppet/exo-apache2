@@ -4,6 +4,7 @@
 # (apache2 MPM Worker documentation : http://httpd.apache.org/docs/2.2/mod/worker.html)
 #
 #   Tested platforms:
+#    - Ubuntu 12.04
 #    - Ubuntu 11.04 Natty
 #
 # Parameters:

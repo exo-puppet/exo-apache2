@@ -6,10 +6,11 @@ class apache2::config {
     ensure  => file,
     owner   => root,
     group   => root,
-    mode    => 0644,
+    mode    => '0644',
     require => Class['apache2::install'],
     notify  => Class['apache2::service'],
-  } -> ####################################
+  } ->
+  ####################################
   # Configure global Apache settings
   ####################################
   augeas { 'configure-apache2-global-settings':
@@ -24,7 +25,8 @@ class apache2::config {
       Class['apache2::install'],
       Package['augeas-tools']],
     notify  => Class['apache2::service'],
-  } -> ####################################
+  } ->
+  ####################################
   # Configure the MPM Worker module
   ####################################
   augeas { 'configure-apache2-mpm-worker-module':
@@ -42,9 +44,10 @@ class apache2::config {
       Class['apache2::install'],
       Package['augeas-tools']],
     notify  => Class['apache2::service'],
-  } -> ####################################
-       # Add SSL Certificats if specified
-       ####################################
+  } ->
+  ####################################
+  # Add SSL Certificats if specified
+  ####################################
   file { $apache2::params::ssl_cert_file:
     ensure  => $apache2::ssl_cert_file ? {
       false   => absent,
@@ -52,7 +55,7 @@ class apache2::config {
     },
     owner   => root,
     group   => root,
-    mode    => 0644,
+    mode    => '0644',
     source  => $apache2::ssl_cert_file ? {
       false   => undef,
       default => $apache2::ssl_cert_file,
@@ -66,7 +69,7 @@ class apache2::config {
     },
     owner   => root,
     group   => root,
-    mode    => 0644,
+    mode    => '0644',
     source  => $apache2::ssl_cert_key_file ? {
       false   => undef,
       default => $apache2::ssl_cert_key_file,
@@ -80,7 +83,7 @@ class apache2::config {
     },
     owner   => root,
     group   => root,
-    mode    => 0644,
+    mode    => '0644',
     source  => $apache2::ssl_cert_chain_file ? {
       false   => undef,
       default => $apache2::ssl_cert_chain_file,
@@ -101,9 +104,10 @@ class apache2::config {
     content => template('apache2/conf.d/virtual.conf.erb'),
     require => Class['apache2::install'],
     notify  => Class['apache2::service'],
-  } -> ####################################
-       # Add default Virtual Host
-       ####################################
+  } ->
+  ####################################
+  # Add default Virtual Host
+  ####################################
   file { $apache2::default_document_root:
     ensure => directory,
     owner  => $apache2::params::user,
