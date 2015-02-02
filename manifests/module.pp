@@ -3,6 +3,7 @@
 #   This module manages apache2 modules.
 #
 #   Tested platforms:
+#    - Ubuntu 14.04
 #    - Ubuntu 12.04
 #    - Ubuntu 11.04 Natty
 #

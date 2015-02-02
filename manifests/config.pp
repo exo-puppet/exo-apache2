@@ -90,20 +90,21 @@ class apache2::config {
     },
     require => Class['apache2::install'],
     notify  => Class['apache2::service'],
-  } -> ####################################
-       # Configure NamedVirtualHost if any
-       ####################################
-  file { "${apache2::params::confd_dir}/virtual.conf":
-    ensure  => $apache2::name_virtual_host_ports ? {
-      false   => absent,
-      default => file,
-    },
-    owner   => root,
-    group   => root,
-    mode    => 0644,
-    content => template('apache2/conf.d/virtual.conf.erb'),
-    require => Class['apache2::install'],
-    notify  => Class['apache2::service'],
+  } ->
+  ####################################
+  # Configure NamedVirtualHost if any
+  ####################################
+  apache2::conf { 'virtual':
+    conf_file_template  => true,
+    activated => $apache2::params::apache_version ? {
+      '2.2' => $apache2::name_virtual_host_ports ? {
+          false   => false,
+          default => true,
+        },
+      '2.4'   => false,
+      default => fail("The ${module_name} module don't support Apache [${apache2::params::apache_version}] version")
+    }
+
   } ->
   ####################################
   # Add default Virtual Host

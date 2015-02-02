@@ -25,7 +25,20 @@ class apache2::params {
         false   => "${config_dir}/includes",
         default => $apache2::includes_dir,
       }
-      $confd_dir           = "${config_dir}/conf.d"
+      case $::lsbdistrelease {
+        /(10.04|11.04|12.04)/ : {
+          $apache_version      = '2.2'
+          $confd_dir           = "${config_dir}/conf.d"
+        }
+        /(14.04)/ : {
+          $apache_version      = '2.4'
+          $conf_available_dir  = "${config_dir}/conf-available"
+          $conf_enabled_dir    = "${config_dir}/conf-enabled"
+        }
+        default         : {
+          fail("The ${module_name} module is not supported on ${::operatingsystem} ${::lsbdistrelease}")
+        }
+      }
 
       $sites_available_dir = "${config_dir}/sites-available"
       $sites_enabled_dir   = "${config_dir}/sites-enabled"

@@ -78,8 +78,13 @@
     # Log configuration
     #####################
     ErrorLog        ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-error.log
-    LogLevel        warn
     CustomLog       ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-access.log combined
+<% if scope.lookupvar('apache2::params::apache_version') == '2.2' -%>
+    LogLevel        warn
     RewriteLog      ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-rewrite.log
     RewriteLogLevel 0
+<% end -%>
+<% if scope.lookupvar('apache2::params::apache_version') == '2.4' -%>
+    LogLevel        warn rewrite:warn
+<% end -%>
 </VirtualHost>

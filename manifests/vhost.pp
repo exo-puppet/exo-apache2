@@ -88,6 +88,18 @@ define apache2::vhost (
     fail("ssl is activated but at least one of the certificates files is missing ( virtual host [${title}][${name}] )")
   }
 
+  case $apache2::params::apache_version {
+    /(2.2)/ : {
+      $vhost_file_extension=''
+    }
+    /(2.4)/ : {
+      $vhost_file_extension='.conf'
+    }
+    default         : {
+      fail("The ${module_name} module don't support Apache [${apache2::params::apache_version}] version")
+    }
+  }
+
   ########################
   # HTTP Configuration
   ########################
@@ -112,6 +124,7 @@ define apache2::vhost (
       true    => 'link',
       default => 'absent'
     },
+    path => "${apache2::params::sites_enabled_dir}/${order}-${name}${vhost_file_extension}",
     owner   => root,
     group   => root,
     mode    => '0644',
@@ -144,6 +157,7 @@ define apache2::vhost (
       },
       default => 'absent',
     },
+    path => "${apache2::params::sites_enabled_dir}/${order}-${name}-ssl${vhost_file_extension}",
     owner   => root,
     group   => root,
     mode    => '0644',
