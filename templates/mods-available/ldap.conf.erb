@@ -1,0 +1,42 @@
+# ###################################
+# This file is managed by puppet
+# PLEASE DON'T MODIFY BY HAND
+# ###################################
+<IfModule ldap_module>
+  # Specifies the socket connection timeout in seconds
+  LDAPConnectionTimeout <%= scope.lookupvar('apache2::mod::ldap::connection_timeout') %>
+  <% if scope.lookupvar('apache2::params::apache_version') == '2.4' -%>
+  # Discard backend connections that have been sitting in the connection pool too long (second)
+  LDAPConnectionPoolTTL <%= scope.lookupvar('apache2::mod::ldap::connection_pool_ttl') %>
+  # Enable debugging in the LDAP SDK
+  LDAPLibraryDebug <%= scope.lookupvar('apache2::mod::ldap::debug_level') %>
+  LDAPRetries <%= scope.lookupvar('apache2::mod::ldap::retries') %>
+  LDAPRetryDelay <%= scope.lookupvar('apache2::mod::ldap::retry_delay') %>
+  <% end -%>
+  # Maximum number of entries in the primary LDAP cache
+  LDAPCacheEntries <%= scope.lookupvar('apache2::mod::ldap::cache_entries') %>
+  # Time that cached items remain valid (second)
+  LDAPCacheTTL <%= scope.lookupvar('apache2::mod::ldap::cache_ttl') %>
+  # Number of entries used to cache LDAP compare operations
+  LDAPOpCacheEntries <%= scope.lookupvar('apache2::mod::ldap::op_cache_entries') %>
+  # Time that entries in the operation cache remain valid (second)
+  LDAPOpCacheTTL <%= scope.lookupvar('apache2::mod::ldap::op_cache_ttl') %>
+  # Size in bytes of the shared-memory cache
+  LDAPSharedCacheSize <%= scope.lookupvar('apache2::mod::ldap::shared_cache_size') %>
+  
+  <% if scope.lookupvar('apache2::params::apache_version') == '2.4' -%>
+  <Location /ldap-status>
+          SetHandler ldap-status
+          Require local
+  </Location>
+  <% elsif scope.lookupvar('apache2::params::apache_version') == '2.2' -%>
+  <Location /ldap-status>
+          SetHandler ldap-status
+          Order deny,allow
+          Deny from all
+          Allow from 127.0.0.1 localhost
+  </Location>
+  <% end -%>
+</IfModule>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
