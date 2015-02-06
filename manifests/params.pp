@@ -34,6 +34,7 @@ class apache2::params {
           $apache_version      = '2.4'
           $conf_available_dir  = "${config_dir}/conf-available"
           $conf_enabled_dir    = "${config_dir}/conf-enabled"
+          $confd_dir           = $conf_enabled_dir # for backward compatibility with Apache 2.2
         }
         default         : {
           fail("The ${module_name} module is not supported on ${::operatingsystem} ${::lsbdistrelease}")
