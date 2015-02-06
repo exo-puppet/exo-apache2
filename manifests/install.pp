@@ -8,7 +8,7 @@ class apache2::install {
     ensure => directory,
     owner  => root,
     group  => root,
-    mode   => 0644,
+    mode   => '0644',
   } -> class { 'apache2::mod::rewrite': activated => true } -> class { 'apache2::mod::ssl': activated => $apache2::ssl }
 
   # In old Apache distributions the APACHE_LOG_DIR envvar wasn't definied and me need it in our config files
