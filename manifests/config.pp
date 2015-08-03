@@ -48,48 +48,10 @@ class apache2::config {
   ####################################
   # Add SSL Certificats if specified
   ####################################
-  file { $apache2::params::ssl_cert_file:
-    ensure  => $apache2::ssl_cert_file ? {
-      false   => absent,
-      default => file,
-    },
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    source  => $apache2::ssl_cert_file ? {
-      false   => undef,
-      default => $apache2::ssl_cert_file,
-    },
-    require => Class['apache2::install'],
-    notify  => Class['apache2::service'],
-  } -> file { $apache2::params::ssl_cert_key_file:
-    ensure  => $apache2::ssl_cert_key_file ? {
-      false   => absent,
-      default => file,
-    },
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    source  => $apache2::ssl_cert_key_file ? {
-      false   => undef,
-      default => $apache2::ssl_cert_key_file,
-    },
-    require => Class['apache2::install'],
-    notify  => Class['apache2::service'],
-  } -> file { $apache2::params::ssl_cert_chain_file:
-    ensure  => $apache2::ssl_cert_chain_file ? {
-      false   => absent,
-      default => file,
-    },
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    source  => $apache2::ssl_cert_chain_file ? {
-      false   => undef,
-      default => $apache2::ssl_cert_chain_file,
-    },
-    require => Class['apache2::install'],
-    notify  => Class['apache2::service'],
+  apache2::certificate { 'ssl' :
+    ssl_cert_file => $apache2::ssl_cert_file,
+    ssl_cert_key_file => $apache2::ssl_cert_key_file,
+    ssl_cert_chain_file => $apache2::ssl_cert_chain_file,
   } ->
   ####################################
   # Configure NamedVirtualHost if any
@@ -116,6 +78,7 @@ class apache2::config {
   } -> apache2::vhost { 'default':
     activated     => true,
     ssl           => $apache2::ssl,
+    ssl_cert_name => $apache2::default_cert_name,
     redirect2ssl  => false,
     order         => '000',
     document_root => $apache2::default_document_root,

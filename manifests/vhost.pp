@@ -72,21 +72,18 @@
 #   }
 #
 define apache2::vhost (
-  $activated      = true,
-  $ssl            = true,
-  $redirect2ssl   = true,
-  $order          = '100',
-  $server_aliases = [
+  $activated            = true,
+  $ssl                  = true,
+  $ssl_cert_name        = 'ssl',
+  $redirect2ssl         = true,
+  $order                = '100',
+  $server_aliases       = [
     ],
-  $admin_email    = $apache2::default_admin_email,
-  $document_root  = '/var/www/',
-  $includes       = [
+  $admin_email          = $apache2::default_admin_email,
+  $document_root        = '/var/www/',
+  $includes             = [
     ],
-  $includes_ssl   = false) {
-  if ($ssl == true and ($apache2::ssl_cert_file == false or $apache2::ssl_cert_key_file == false or $apache2::ssl_cert_chain_file ==
-  false)) {
-    fail("ssl is activated but at least one of the certificates files is missing ( virtual host [${title}][${name}] )")
-  }
+  $includes_ssl         = false) {
 
   case $apache2::params::apache_version {
     /(2.2)/ : {

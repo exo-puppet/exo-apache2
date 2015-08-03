@@ -38,6 +38,8 @@
 #       http://httpd.apache.org/docs/2.2/mod/core.html#keepalivetimeout)
 #   $ssl:
 #       activate (true) or not (false) mod_ssl
+#   $default_cert_name :
+#       Certificate name to use on default vhost
 #   $ssl_cert_file:
 #       A certificat file
 #   $ssl_cert_key_file:
@@ -94,9 +96,10 @@ class apache2 (
   $max_keepalive_requests  = '500',
   $keepalive_timeout       = '15',
   $ssl                     = false,
-  $ssl_cert_file           = false,
-  $ssl_cert_key_file       = false,
-  $ssl_cert_chain_file     = false,
+  $default_cert_name       = "ssl",
+  $ssl_cert_file           = "false",
+  $ssl_cert_key_file       = "false",
+  $ssl_cert_chain_file     = "false",
   $error_403_uri           = false,
   $error_404_uri           = false,
   $error_500_uri           = false,

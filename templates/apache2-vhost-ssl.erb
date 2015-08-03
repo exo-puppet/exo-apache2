@@ -104,9 +104,9 @@
     # SSL configuration
     #####################
     SSLEngine             on
-    SSLCertificateFile    <%= scope.lookupvar('apache2::params::ssl_cert_file') %>
-    SSLCertificateKeyFile    <%= scope.lookupvar('apache2::params::ssl_cert_key_file') %>
-    SSLCertificateChainFile    <%= scope.lookupvar('apache2::params::ssl_cert_chain_file') %>
+    SSLCertificateFile       <%= scope.lookupvar('apache2::params::certs_dir') %>/<%= scope.lookupvar('ssl_cert_name') %>-cert.cer
+    SSLCertificateKeyFile    <%= scope.lookupvar('apache2::params::certs_dir') %>/<%= scope.lookupvar('ssl_cert_name') %>-cert.key
+    SSLCertificateChainFile  <%= scope.lookupvar('apache2::params::certs_dir') %>/<%= scope.lookupvar('ssl_cert_name') %>-chain.txt
     SSLVerifyClient None
     # Requires apache 2.3+
     #SSLUseStapling on

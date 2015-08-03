@@ -17,9 +17,6 @@ class apache2::params {
       $config_file         = "${config_dir}/apache2.conf"
 
       $certs_dir           = "${config_dir}/certs"
-      $ssl_cert_file       = "${certs_dir}/ssl-cert.cer"
-      $ssl_cert_key_file   = "${certs_dir}/ssl-cert.key"
-      $ssl_cert_chain_file = "${certs_dir}/ssl-chain.txt"
 
       $includes_dir        = $apache2::includes_dir ? {
         false   => "${config_dir}/includes",
