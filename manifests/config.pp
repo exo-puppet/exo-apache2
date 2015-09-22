@@ -68,4 +68,9 @@ class apache2::config {
     document_root => $apache2::default_document_root,
     includes      => $apache2::default_vhost_includes,
   }
+  # Configure SSLStapling
+  apache2::conf { 'sslstapling':
+    conf_file_template  => true,
+    activated => $apache2::params::apache_version == '2.4',
+  }
 }
