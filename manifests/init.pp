@@ -101,6 +101,7 @@ class apache2 (
   $ssl_cert_file              = "false",
   $ssl_cert_key_file          = "false",
   $ssl_cert_chain_file        = "false",
+  $ssl_jdk16_compatible       = false,
   $error_403_uri              = false,
   $error_404_uri              = false,
   $error_500_uri              = false,

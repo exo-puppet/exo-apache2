@@ -83,7 +83,8 @@ define apache2::vhost (
   $document_root        = '/var/www/',
   $includes             = [
     ],
-  $includes_ssl         = false) {
+  $includes_ssl         = false,
+  $ssl_jdk16_compatible = $apache2::ssl_jdk16_compatible) {
 
   case $apache2::params::apache_version {
     /(2.2)/ : {
