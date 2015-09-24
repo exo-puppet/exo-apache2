@@ -48,6 +48,8 @@
 #       A certificat chain file
 #   $includes_dir:
 #       the directory where configuration file to include will be stored
+#   $ssl_jdk16_compatible
+#       Deploy a less secure ssl configuration for vhosts accessed by jdk1.6 clients
 # $lastversion:
 # 	this variable allow to chose if the package should always be updated to the last available version (true) or not (false)
 #  (default: false)
