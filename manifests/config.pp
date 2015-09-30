@@ -67,7 +67,7 @@ class apache2::config {
     order         => '000',
     document_root => $apache2::default_document_root,
     includes      => $apache2::default_vhost_includes,
-  }
+  } ->
   # Configure SSLStapling
   apache2::conf { 'sslstapling':
     conf_file_template  => true,
