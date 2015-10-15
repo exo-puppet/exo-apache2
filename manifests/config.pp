@@ -72,5 +72,6 @@ class apache2::config {
   apache2::conf { 'sslstapling':
     conf_file_template  => true,
     activated => $apache2::params::apache_version == '2.4',
+    require => Class['apache2::install'],
   }
 }

@@ -22,8 +22,14 @@ class apache2::mod::mpm::configure {
       }
     }
     default : {
-      class { "apache2::mod::mpm::common" : } ->
-      class { "apache2::mod::mpm::${::apache2_mpm_type}" : }
+      class { "apache2::mod::mpm::common" :
+        require => Class['apache2::install'],
+        notify  => Class['apache2::service'],
+      } ->
+      class { "apache2::mod::mpm::${::apache2_mpm_type}" :
+        require => Class['apache2::install'],
+        notify  => Class['apache2::service'],
+      }
     }
   }
 }
