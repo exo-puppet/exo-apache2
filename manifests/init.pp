@@ -94,6 +94,7 @@ class apache2 (
   $max_clients                = '150',
   $max_requests_per_child     = '0',
   $graceful_shutdown_timeout  = '60', # For apache >= 2.4
+  $server_limit               = '16', # Apache default value (MaxSpareThreads / ThreadPerChilds)
   $timeout                    = '300',
   $keepalive                  = 'On',
   $max_keepalive_requests     = '500',
