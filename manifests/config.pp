@@ -73,5 +73,6 @@ class apache2::config {
     conf_file_template  => true,
     activated => $apache2::params::apache_version == '2.4',
     require => Class['apache2::install'],
+    notify  => Class['apache2::service'],
   }
 }
