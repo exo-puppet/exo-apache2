@@ -53,6 +53,13 @@ class apache2::config {
 
   } ->
   ####################################
+  # Configure Log formats
+  ####################################
+  apache2::conf { 'logformat':
+    conf_file_template  => true,
+    activated => true,
+  } ->
+  ####################################
   # Add default Virtual Host
   ####################################
   file { $apache2::default_document_root:

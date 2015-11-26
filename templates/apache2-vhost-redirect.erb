@@ -78,7 +78,7 @@
     # Log configuration
     #####################
     ErrorLog        ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-error.log
-    CustomLog       ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-access.log combined
+    CustomLog       ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-access.log combined_duration
 <% if scope.lookupvar('apache2::params::apache_version') == '2.2' -%>
     LogLevel        warn
     RewriteLog      ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-rewrite.log

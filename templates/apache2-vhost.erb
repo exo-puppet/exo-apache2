@@ -92,6 +92,6 @@
 <% if scope.lookupvar('apache2::params::apache_version') == '2.4' -%>
     LogLevel        warn rewrite:warn
 <% end -%>
-    CustomLog       ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-access.log combined
+    CustomLog       ${APACHE_LOG_DIR}/<%= scope.lookupvar('name') %>-access.log combined_duration
     
 </VirtualHost>
