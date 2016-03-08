@@ -38,16 +38,5 @@ class apache2::mod::mpm::common {
       Class['apache2::install'],
       Package['augeas-tools']],
     notify  => Class['apache2::service'],
-  } ->
-  file_line { 'mpm_graceful_server_limit' :
-    path    => "${apache2::params::mpm_config_file}",
-    match   => "ServerLimit.*[0-9]+",
-    after   => "<IfModule ${apache2::params::mpm_module}>",
-    line    => "  ServerLimit              ${apache2::server_limit}",
-    require => [
-      Class['apache2::install'],
-      Package['augeas-tools']],
-    notify  => Class['apache2::service'],
   }
-
 }
