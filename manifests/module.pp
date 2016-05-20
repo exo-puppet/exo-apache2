@@ -38,9 +38,7 @@ define apache2::module (
   include 'apache2'
 
   if $package_name != false {
-    repo::package { $package_name:
-      notify => Class['apache2::service'],
-    }
+    ensure_packages ( $package_name, { 'notify' => Class['apache2::service'], 'require' => Class['apt::update'] } )
   }
 
   if ($activated == true) {

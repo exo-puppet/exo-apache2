@@ -126,7 +126,7 @@ class apache2 (
   }
 
   # modules dependencies
-  include repo
+  include stdlib
 
   # internal classes
   include apache2::params, apache2::install, apache2::config, apache2::service

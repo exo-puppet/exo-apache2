@@ -14,9 +14,9 @@ class apache2::mod::crowd (
   case $apache2::params::apache_version {
     /(2.2)/ : {
       # Install the required packages
-      repo::package { 'libapache2-svn': }
+      ensure_packages ( 'libapache2-svn' , { 'require' => Class['apt::update'] } )
 
-      repo::package { 'libcurl3': }
+      ensure_packages ( 'libcurl3' , { 'require' => Class['apt::update'] } )
       # Download the deb package
       $module_deb_filename = 'libapache2-mod-authnz-crowd_2.0.2-1_amd64.deb'
       wget::fetch { 'download-libapache2-mod-authnz-crowd':
@@ -26,16 +26,15 @@ class apache2::mod::crowd (
         timeout           => 0,
         check_certificate => false,
         require           => File[$package_download_directory]
-      } ->
+      }
       # Install the downloaded package
-      package { 'libapache2-mod-authnz-crowd':
-        provider => dpkg,
-        source   => "${package_download_directory}/${module_deb_filename}",
-        require  => [
+      ensure_packages ( 'libapache2-mod-authnz-crowd', {
+        'provider' => dpkg,
+        'source'   => "${package_download_directory}/${module_deb_filename}",
+        'require'  => [
           Wget::Fetch['download-libapache2-mod-authnz-crowd'],
-          Exec['repo-update'],
-          ],
-      } ->
+          Package['libapache2-svn']],
+      } )
       # Add the Apache 2 module
       apache2::module { 'authnz_crowd':
         activated => $activated,
