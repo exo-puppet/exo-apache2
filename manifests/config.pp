@@ -58,10 +58,15 @@ class apache2::config {
   apache2::conf { 'logformat':
     conf_file_template  => true,
     activated => true,
-  } ->
+  }
   ####################################
   # Add default Virtual Host
   ####################################
+  if $apache2::params::apache_version == '2.4' and $apache2::ssl {
+    $enable_stapling = true
+  } else {
+    $enable_stapling = false
+  }
   file { $apache2::default_document_root:
     ensure => directory,
     owner  => $apache2::params::user,
@@ -78,7 +83,7 @@ class apache2::config {
   # Configure SSLStapling
   apache2::conf { 'sslstapling':
     conf_file_template  => true,
-    activated => $apache2::params::apache_version == '2.4',
+    activated => $enable_stapling,
     require => Class['apache2::install'],
     notify  => Class['apache2::service'],
   }
