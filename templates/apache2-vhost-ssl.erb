@@ -2,7 +2,7 @@
 # This file is managed by puppet
 # PLEASE DON'T MODIFY BY HAND
 # ###################################
-<VirtualHost *:443>
+<VirtualHost *:<%= scope.lookupvar('apache2::https_port') %>>
 
 <% if (@name != 'default') -%>
 <%= "    ServerName #{@name}" -%>

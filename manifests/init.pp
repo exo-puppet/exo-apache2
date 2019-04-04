@@ -112,6 +112,8 @@ class apache2 (
   $error_503_uri              = false,
   $includes_dir               = false,
   $name_virtual_host_ports    = false,
+  $http_port                  = 80,
+  $https_port                 = 443,
   $default_admin_email        = "webmaster@${::fqdn}",
   $default_document_root      = '/var/www/',
   $default_vhost_includes     = [],

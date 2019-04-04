@@ -4,6 +4,15 @@ class apache2::install {
     'ensure'  => $apache2::params::ensure_mode,
     'require' => Class['apt::update'],
   } )
+  file { $apache2::params::ports_file:
+    ensure  => file,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('apache2/ports.conf.erb'),
+    notify  => Class['apache2::service'],
+    require => Package['httpd'],
+  }
 
   file { $apache2::params::certs_dir:
     ensure  => directory,

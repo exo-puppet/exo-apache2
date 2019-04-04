@@ -15,6 +15,7 @@ class apache2::params {
 
       $config_dir          = '/etc/apache2'
       $config_file         = "${config_dir}/apache2.conf"
+      $ports_file          = "${config_dir}/ports.conf"
 
       $sites_available_dir = "${config_dir}/sites-available"
       $sites_enabled_dir   = "${config_dir}/sites-enabled"
