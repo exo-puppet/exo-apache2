@@ -37,7 +37,7 @@ class apache2::params {
           $mpm_engine           = "mpm_worker"
           $mpm_config_file      = "${config_file}"
         }
-        /(14.04)/ : {
+        /(14.04|16.04)/ : {
           $apache_version       = '2.4'
           $conf_available_dir   = "${config_dir}/conf-available"
           $conf_enabled_dir     = "${config_dir}/conf-enabled"
