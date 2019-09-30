@@ -68,13 +68,18 @@ class apache2::mod::mem_cache (
   if ($removal_algorithm != 'GDSF') and ($removal_algorithm != 'LRU') {
     fail("The parameter removal_algorithm in ${module_name} module only support GDSF or LRU values and not ${removal_algorithm}")
   }
-
-  apache2::module { 'mem_cache':
-    activated          => $activated,
-    conf_file          => true,
-    conf_file_template => true,
-    require            => [
-      Package['httpd'],
-      Class['apache2::mod::cache']],
+  case $apache2::params::apache_version {
+    /(2.2)/ : {
+      apache2::module { 'mem_cache':
+        activated          => $activated,
+        conf_file          => true,
+        conf_file_template => true,
+        require            => [
+          Package['httpd'],
+          Class['apache2::mod::cache']],
+      }
+    default : {
+      fail("The ${module_name} module is not supported un Apache [${apache2::params::apache_version}] version, please use cache_disk module instead")
+    }
   }
 }
