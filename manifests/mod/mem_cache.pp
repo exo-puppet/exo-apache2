@@ -78,6 +78,7 @@ class apache2::mod::mem_cache (
           Package['httpd'],
           Class['apache2::mod::cache']],
       }
+    }
     default : {
       fail("The ${module_name} module is not supported un Apache [${apache2::params::apache_version}] version, please use cache_disk module instead")
     }
